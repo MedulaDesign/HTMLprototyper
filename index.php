@@ -1,11 +1,16 @@
 <?php
+
 require_once 'bootstrap.php';
 autoload('Medula\HTMLprototyper\HTMLprototyper');
 
+$HTMLprototyper = new Medula\HTMLprototyper\HTMLprototyper();
+
 if (isset($_POST['projectName']))
 {
-	$projectName = trim($_POST['projectName']);
+	$projectName = $_POST['projectName'];
+	$HTMLprototyper->newProject($projectName, 'template.html');
 }
+
 ?>
 <!doctype html>
 <html lang="es">
