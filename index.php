@@ -33,7 +33,7 @@ $projectsList = $HTMLprototyper->listProjects();
 	<ul>
 		<?php
 			foreach ($projectsList as $project) {
-				echo '<li><a href="' . $HTMLprototyper->projectsFolder . '/' . $project['1'] . '">' . $project['0'] . '</a></li>';
+				echo '<li><a href="' . $HTMLprototyper::$projectsFolder . '/' . $project['1'] . '">' . $project['0'] . '</a></li>';
 			}
 		?>
 	</ul>
