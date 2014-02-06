@@ -1,0 +1,32 @@
+.HTMLprototyper-bar {
+	display: none;
+	position: absolute;
+	top: 0;
+	height: 60px;
+	width: 100%;
+	background-color: #ccc;
+	border-bottom: 1px solid black;
+	padding: 5px 5px 0 5px;
+}
+
+.HTMLprototyper-bar-open {
+	padding-top: 60px;
+}
+
+.HTMLprototyper-bar-files {
+	float: left;
+}
+
+.HTMLprototyper-bar-files select {
+	width: 200px;
+	height: 44px;
+}
+
+.HTMLprototyper-bar-meta {
+	position: relative;
+	float: right;
+}
+
+.HTMLprototyper-bar-meta p {
+	margin-top: 15px;
+}

@@ -2,8 +2,9 @@
 
 class HTMLprototyper
 {
-    private $projectsFolder = 'projects';
+    public static $projectsFolder = 'projects';
     private $projectsList = 'projects.txt';
+    private $tempaltesFolder = 'templates';
     private $config;
 
     public function __construct()
@@ -16,13 +17,6 @@ class HTMLprototyper
         if (!is_writable($this->projectsFolder)) {
             throw new \Exception("Projects folder (/$this->projectsFolder) is not writeable");
         }
-        // Revisamos que exista el archivo que contiene la relación de las carpetas
-        // con los nombres de los proyectos
-        if (!is_file($this->projectsFolder . '/' . $this->projectsList)) {
-            // Si no exista, recorremos los proyectos y creamos el archivo
-            // TODO
-            echo 'No esta projects.txt';
-        }
         // Obtenemos la configuración para que la clase pueda tener acceso a ésta
         global $config;
         $this->config = $config;
@@ -31,7 +25,7 @@ class HTMLprototyper
     public function newProject($projectName, $templateFile)
     {
         // En primera instancia debemos revisar que el template enviado exista
-        if (is_file($templateFile)) {
+        if (is_file($this->tempaltesFolder. '/' . $templateFile)) {
             // Obtenemos el nombre del nuevo directorio
             $projectFolder = $this->folderName($projectName);
             // Creamos el directorio
@@ -47,11 +41,6 @@ class HTMLprototyper
         }
     }
 
-    public function listProjects()
-    {
-
-    }
-
     private function folderName($projectName)
     {
         return sha1($projectName . microtime());
@@ -59,7 +48,7 @@ class HTMLprototyper
 
     private function createFromTemplate($templateFile, $projectName, $projectFolder, $fileName)
     {
-        $template = new \SPLFileObject($templateFile, 'r');
+        $template = new \SPLFileObject($this->tempaltesFolder . '/'. $templateFile, 'r');
         $content = '';
         while (!$template->eof()) {
             $content .= $template->fgets();
@@ -83,5 +72,17 @@ class HTMLprototyper
     {
         $projectsList = new \SPLFileObject($this->projectsFolder . '/' . $this->projectsList, 'a');
         $projectsList->fwrite($projectName . '::' . $projectFolder . PHP_EOL);
+    }
+
+    public function listProjects()
+    {
+        $projects = array();
+        $projectsList = new \SPLFileObject($this->projectsFolder . '/' . $this->projectsList, 'a+');
+        foreach ($projectsList as $line) {
+            if (!$projectsList->eof()) {
+                $projects[] = explode('::', trim($line));
+            }
+        }
+        return $projects;
     }
 }
