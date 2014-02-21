@@ -181,11 +181,19 @@ class HTMLprototyper
         return $templates;
     }
 
+    /**
+     * Envia el correo notificado la creación del nuevo proyecto
+     * y la URL de accesso
+     * @param  string $projectName   Nombre del proyecto
+     * @param  string $projectFolder Carpeta del proyecto
+     * @return void
+     */
     private function sendEmail($projectName, $projectFolder)
     {
         $subject = str_replace('{project}', $projectName, $this->lang['email_subjet']);
-        $baseURL = $_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']);
-        $body = str_replace('{project_url}', $baseURL, $this->lang['email_body']);
+        $projectURL = 'http://' . $_SERVER['SERVER_NAME'] . $this->config['base_path'] . '/' . $this::$projectsFolder . '/' . $projectFolder;
+        $body = str_replace('{project_url}', $projectURL, $this->lang['email_body']);
+        $body = str_replace('{project}', $projectName, $body);
         mail($this->config['email'], $subject, $body);
     }
 }
