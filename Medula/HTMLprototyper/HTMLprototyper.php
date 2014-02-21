@@ -3,7 +3,7 @@
 class HTMLprototyper
 {
     public static $projectsFolder = 'projects';
-    public static $tempaltesFolder = 'templates';
+    public static $templatesFolder = 'templates';
     private $projectsList = 'projects.txt';
     public $config;
     public $lang;
@@ -37,7 +37,7 @@ class HTMLprototyper
     public function newProject($projectName, $templateFile)
     {
         // En primera instancia debemos revisar que el template enviado exista
-        if (is_file($this::$tempaltesFolder. '/' . $templateFile)) {
+        if (is_file($this::$templatesFolder. '/' . $templateFile)) {
             // Obtenemos el nombre del nuevo directorio
             $projectFolder = $this->folderName($projectName);
             // Creamos el directorio
@@ -74,7 +74,7 @@ class HTMLprototyper
     public function createFromTemplate($templateFile, $projectName, $projectFolder, $fileName, $foundationVersion = null)
     {
         // Obtenemos el contenido de la plantilla
-        $template = new \SPLFileObject($this::$tempaltesFolder . '/'. $templateFile, 'r');
+        $template = new \SPLFileObject($this::$templatesFolder . '/'. $templateFile, 'r');
         $content = '';
         while (!$template->eof()) {
             $content .= $template->fgets();
@@ -162,7 +162,7 @@ class HTMLprototyper
     public function listTemplates()
     {
         $templates = array();
-        $files = glob($this::$tempaltesFolder . '/*.html');
+        $files = glob($this::$templatesFolder . '/*.html');
         // Recorremos todas las plantillas
         foreach ($files as $key => $file) {
             $file = basename($file);
@@ -170,10 +170,10 @@ class HTMLprototyper
                 // Revisamos si tiene una imagen de muestra
                 list($file, $type) = explode('.', $file);
                 $image = 'no-image';
-                if (is_file($this::$tempaltesFolder . '/' . $file .'.png')) {
+                if (is_file($this::$templatesFolder . '/' . $file .'.png')) {
                     $image = $file;
                 }
-                $templates[] = array('template' => $file . '.html', 'image' => '../../' . $this::$tempaltesFolder . '/' . $image . '.png');
+                $templates[] = array('template' => $file . '.html', 'image' => '../../' . $this::$templatesFolder . '/' . $image . '.png');
             }
         }
         return $templates;

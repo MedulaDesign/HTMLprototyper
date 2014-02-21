@@ -1,2 +1,5 @@
 User-agent: *
 Disallow: /projects/
+Disallow: /lang/
+Disallow: /Medula/
+Disallow: /templates/
