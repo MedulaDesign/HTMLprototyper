@@ -41,6 +41,13 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND strtolower($_SERVER['HTTP_X_REQ
         // Guarda el archivo
         } elseif (isset($_POST['save']) and isset($_POST['html']) and isset($_POST['fileName'])) {
             $project->saveFile($_POST['fileName'], $_POST['html']);
+        } elseif (isset($_GET['newProject']) and isset($_GET['projectName'])) {
+            $HTMLprototyper = new Medula\HTMLprototyper\HTMLprototyper();
+            $projectFolder = $HTMLprototyper->newProject($_GET['projectName']);
+            // Revisamos que lo devuelta sea efectivamente un directorio
+            if (preg_match('/\b[0-9a-f]{40}\b/', $projectFolder) > 0) {
+                echo $projectFolder;
+            }
         }
     }
 }

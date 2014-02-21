@@ -9,7 +9,7 @@ $HTMLprototyper = new Medula\HTMLprototyper\HTMLprototyper();
 if (isset($_POST['projectName']))
 {
 	$projectName = $_POST['projectName'];
-	$HTMLprototyper->newProject($projectName, $config['default_template']);
+	$HTMLprototyper->newProject($projectName);
 }
 
 // Listado de proyectos
@@ -20,7 +20,7 @@ $projectsList = $HTMLprototyper->listProjects();
 <html lang="es">
 <head>
 	<meta charset="utf-8">
-	<title>HTMLprototyper - <?=$config['company']?></title>
+	<title>HTMLprototyper - <?php echo $config['company']; ?></title>
 	<meta http-equiv="x-ua-compatible" content="ie=edge, chrome=1">
 </head>
 <body>
@@ -28,7 +28,7 @@ $projectsList = $HTMLprototyper->listProjects();
 	<input type="text" name="projectName" placeholder="Nombre proyecto">
 	<input type="submit">
 </form>
-<h1><?=$lang['project_list']?></h1>
+<h1><?php echo $lang['project_list']; ?></h1>
 <div>
 	<ul>
 		<?php

@@ -32,10 +32,14 @@ class HTMLprototyper
      * Crea un nuevo proyecto
      * @param  string $projectName  Nombre del proyecto
      * @param  string $templateFile Nombre del archivo de plantilla
-     * @return void
+     * @return string Carpeta del proyecto
      */
-    public function newProject($projectName, $templateFile)
+    public function newProject($projectName, $templateFile = null)
     {
+        // Si no se envia una plantilla a utilizar, ocupamos la por defecto
+        if (is_null($templateFile)) {
+            $templateFile = $this->config['default_template'];
+        }
         // En primera instancia debemos revisar que el template enviado exista
         if (is_file($this::$templatesFolder. '/' . $templateFile)) {
             // Obtenemos el nombre del nuevo directorio
@@ -53,6 +57,7 @@ class HTMLprototyper
         } else {
             throw new \Exception("Template file $templateFile does not exists");
         }
+        return $projectFolder;
     }
 
     /**

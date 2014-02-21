@@ -5,8 +5,18 @@
 		<button class="small" data-role="copy">{copy_file}</button>
 		<button class="small success" data-role="save">{save}</button>
 	</div>
+	<div class="HTMLprototyper-bar-new-project">
+		<button class="small success" data-role="project">{new_project}</button>
+	</div>
 	<div class="HTMLprototyper-bar-meta">
-		<p>{modified} {modified-date}</p>
-		<p>{modified} {modified-date}</p>
+		<div class="HTMLprototyper-bar-meta-project">
+			<small>Proyecto</small>
+			<h3>{project_name}</h3>
+		</div>
+		<div class="HTMLprototyper-bar-meta-date">
+			<small>{file_name}</small>
+			<p>{created} {created_date}</p>
+			<p>{modified} {modified_date}</p>
+		</div>
 	</div>
 </div>

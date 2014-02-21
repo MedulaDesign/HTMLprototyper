@@ -79,8 +79,13 @@ var HTMLprototyper = (function ($) {
         data = data.replace('{new_file}', lang.new_file);
         data = data.replace('{copy_file}', lang.copy_file);
         data = data.replace('{save}', lang.save);
+        data = data.replace('{project_name}', _dataBar.metadata.projectName);
+        data = data.replace('{file_name}', fileMetaData[0]);
         data = data.replace('{modified}', lang.modified);
-        data = data.replace('{modified-date}', fileMetaData[2]);
+        data = data.replace('{modified_date}', fileMetaData[2]);
+        data = data.replace('{created}', lang.created);
+        data = data.replace('{created_date}', fileMetaData[1]);
+        data = data.replace('{new_project}', lang.new_project);
         return data;
     };
     /**
@@ -118,6 +123,9 @@ var HTMLprototyper = (function ($) {
         });
         $bar.find('button[data-role="save"]').on('click', function () {
             _saveFileEvent();
+        });
+        $bar.find('button[data-role="project"]').on('click', function () {
+            _newProjectEvent();
         });
     };
     /**
@@ -173,6 +181,10 @@ var HTMLprototyper = (function ($) {
         // Abrimos la modal
         Modal.open();
     };
+    /**
+     * Genera una copia del archivo que se esta editando
+     * @return {void}
+     */
     var _copyFileEvent = function () {
         newFileName = prompt(_dataBar.lang.js_new_file_name);
         // Si el nombre no está vacío y no tiene caracateres extraños
@@ -189,6 +201,10 @@ var HTMLprototyper = (function ($) {
             alert(_dataBar.lang.js_alphanumeric);
         }
     };
+    /**
+     * Guarda el contenido del archivo en el servidor
+     * @return {void}
+     */
     var _saveFileEvent = function () {
         var $html = $('html').clone();
         $html.find('body').removeClass('HTMLprototyper-bar-open');
@@ -200,6 +216,25 @@ var HTMLprototyper = (function ($) {
         $.post('../../project.php', {save: true, html: $html.html(), fileName: _currentFile}, function (data) {
             // Nada que hacer por el momento :P
         });
+    };
+    /**
+     * Crea un nuevo proyecto
+     * @return {void}
+     */
+    var _newProjectEvent = function () {
+        newProjectName = prompt(_dataBar.lang.js_new_project_name);
+        // Si el nombre no está vacío
+        if ($.trim(newProjectName) !== '') {
+            $.get('../../project.php?newProject&projectName=' + newProjectName, function (data) {
+                if (data !== '') {
+                    document.location.href = '../' + data;
+                } else {
+                    alert(_dataBar.lang.js_new_project_error);
+                }
+            });
+        } else {
+            alert(_dataBar.lang.js_empty_name);
+        }
     };
 
     return {
