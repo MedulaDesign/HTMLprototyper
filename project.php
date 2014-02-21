@@ -2,7 +2,6 @@
 
 // Todas las consultas deben venir vía AJAX
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
-    print_r($_SERVER);
     require_once 'bootstrap.php';
     autoload('Medula\HTMLprototyper\HTMLprototyper');
     autoload('Medula\HTMLprototyper\Project');

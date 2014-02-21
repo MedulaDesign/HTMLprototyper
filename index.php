@@ -9,7 +9,7 @@ $HTMLprototyper = new Medula\HTMLprototyper\HTMLprototyper();
 if (isset($_POST['projectName']))
 {
 	$projectName = $_POST['projectName'];
-	$HTMLprototyper->newProject($projectName, 'template.html');
+	$HTMLprototyper->newProject($projectName, $config['default_template']);
 }
 
 // Listado de proyectos
