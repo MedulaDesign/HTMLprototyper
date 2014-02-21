@@ -30,3 +30,47 @@
 .HTMLprototyper-bar-meta p {
 	margin-top: 15px;
 }
+
+.HTMLprototyper-templates ul {
+	list-style-type: none;
+}
+
+.HTMLprototyper-templates li {
+	width: 50%;
+	text-align: center;
+	float: left;
+	cursor: pointer;
+}
+
+.HTMLprototyper-templates li:hover {
+	background-color: yellow;
+}
+
+.HTMLprototyper-templates img {
+	display: block;
+	margin: 0 auto;
+}
+
+/**
+ * Modal
+ */
+.HTMLprototyper-modal-overlay {
+	z-index: 9999;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 900px;
+	background: rgba(0, 0, 0, 0.8);
+	overflow: hidden;
+	display: none;
+}
+
+.HTMLprototyper-modal-content {
+	width: 650px;
+	height: 650px;
+	background-color: white;
+	border-radius: 2px;
+	margin: 100px auto;
+	overflow: auto;
+}
