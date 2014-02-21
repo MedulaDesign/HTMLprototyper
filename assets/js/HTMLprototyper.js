@@ -3,7 +3,8 @@ var HTMLprototyper = (function ($) {
     $bar,
     _templates,
     _newFileTemplate,
-    _currentFile;
+    _currentFile,
+    _loaderImg = '../../assets/img/ajax-loader.gif';
     /**
      * Obtiene datos principales de la barra y otros
      * necesarios para el funcionamiento
@@ -119,13 +120,13 @@ var HTMLprototyper = (function ($) {
             _newFileEvent();
         });
         $bar.find('button[data-role="copy"]').on('click', function () {
-            _copyFileEvent();
+            _copyFileEvent(this);
         });
         $bar.find('button[data-role="save"]').on('click', function () {
-            _saveFileEvent();
+            _saveFileEvent(this);
         });
         $bar.find('button[data-role="project"]').on('click', function () {
-            _newProjectEvent();
+            _newProjectEvent(this);
         });
     };
     /**
@@ -151,7 +152,7 @@ var HTMLprototyper = (function ($) {
      * Evento que maneja la creación de un nuevo archivo
      * @return {void}
      */
-    var _newFileEvent = function () {
+    var _newFileEvent = function (btn) {
         // Cargamos la plantilla
         Modal.load(_newFileTemplate);
         // Agregamos las plantillas existente a la modal
@@ -185,10 +186,11 @@ var HTMLprototyper = (function ($) {
      * Genera una copia del archivo que se esta editando
      * @return {void}
      */
-    var _copyFileEvent = function () {
+    var _copyFileEvent = function (btn) {
         newFileName = prompt(_dataBar.lang.js_new_file_name);
         // Si el nombre no está vacío y no tiene caracateres extraños
         if ($.trim(newFileName) !== '' && newFileName.match(/^[a-z0-9\-\_]+$/i)) {
+            $(btn).html($(btn).html() + ' <img src="' + _loaderImg + '">').attr('disabled', 'disabled');
             $.get('../../project.php?copyFile&fileName=' + _currentFile + '&newFileName=' + newFileName, function (data) {
                 data = JSON.parse(data);
                 if (data.error === false) {
@@ -196,6 +198,8 @@ var HTMLprototyper = (function ($) {
                 } else {
                     alert(data.msg);
                 }
+            }).always(function () {
+                $(btn).removeAttr('disabled').find('img').remove();
             });
         } else {
             alert(_dataBar.lang.js_alphanumeric);
@@ -205,7 +209,8 @@ var HTMLprototyper = (function ($) {
      * Guarda el contenido del archivo en el servidor
      * @return {void}
      */
-    var _saveFileEvent = function () {
+    var _saveFileEvent = function (btn) {
+        console.log(btn);
         var $html = $('html').clone();
         $html.find('body').removeClass('HTMLprototyper-bar-open');
         $html.find('#HTMLprototyper-bar').remove();
@@ -215,22 +220,27 @@ var HTMLprototyper = (function ($) {
         $html.find('#window-resizer-tooltip').remove();
         $.post('../../project.php', {save: true, html: $html.html(), fileName: _currentFile}, function (data) {
             // Nada que hacer por el momento :P
+        }).always(function () {
+            $(btn).removeAttr('disabled').find('img').remove();
         });
     };
     /**
      * Crea un nuevo proyecto
      * @return {void}
      */
-    var _newProjectEvent = function () {
+    var _newProjectEvent = function (btn) {
         newProjectName = prompt(_dataBar.lang.js_new_project_name);
         // Si el nombre no está vacío
         if ($.trim(newProjectName) !== '') {
+            $(btn).html($(btn).html() + ' <img src="' + _loaderImg + '">').attr('disabled', 'disabled');
             $.get('../../project.php?newProject&projectName=' + newProjectName, function (data) {
                 if (data !== '') {
                     document.location.href = '../' + data;
                 } else {
                     alert(_dataBar.lang.js_new_project_error);
                 }
+            }).always(function () {
+                $(btn).removeAttr('disabled').find('img').remove();
             });
         } else {
             alert(_dataBar.lang.js_empty_name);

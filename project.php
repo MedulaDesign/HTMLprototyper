@@ -22,6 +22,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND strtolower($_SERVER['HTTP_X_REQ
             $data = array(
                 'files' => $project->getFiles(),
                 'lang' => $lang,
+                'config' => $config,
                 'metadata' => $project->projectMetaData
             );
             echo json_encode($data);
