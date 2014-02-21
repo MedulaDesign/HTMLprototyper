@@ -8,6 +8,8 @@ return array(
     'copy_file' => 'Copiar archivo',
     'save' => 'Guardar',
     'modified' => 'Modificado el',
+    'email_subjet' => 'Nuevo Proyecto: {project}',
+    'email_body' => 'El proyecto {project} ha sido creado. Puedes acceder desde la siguiente URL: {project_url}',
     /**
      * JavaScript
      */

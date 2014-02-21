@@ -48,6 +48,8 @@ class HTMLprototyper
             $this->newProjectMetaData($projectFolder, $projectName);
             // Creamos el index.html en base al template definido
             $this->createFromTemplate($templateFile, $projectName, $projectFolder, 'index.html');
+            // Enviamos el correo con los datos de acceso
+            $this->sendEmail($projectName, $projectFolder);
         } else {
             throw new \Exception("Template file $templateFile does not exists");
         }
@@ -177,5 +179,13 @@ class HTMLprototyper
             }
         }
         return $templates;
+    }
+
+    private function sendEmail($projectName, $projectFolder)
+    {
+        $subject = str_replace('{project}', $projectName, $this->lang['email_subjet']);
+        $baseURL = $_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']);
+        $body = str_replace('{project_url}', $baseURL, $this->lang['email_body']);
+        mail($this->config['email'], $subject, $body);
     }
 }
