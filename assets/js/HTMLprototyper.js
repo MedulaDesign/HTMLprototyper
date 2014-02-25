@@ -95,13 +95,13 @@ var HTMLprototyper = (function ($) {
      */
     var _fileMetaData = function () {
         var files = _dataBar.metadata.files;
-        for(file in files) {
+        for(var file in files) {
             file = files[file];
             if (_currentFile === file[0] || (_currentFile === '' && file[0] === 'index.html')) {
                 return file;
             }
         }
-    }
+    };
     /**
      * Se encarga de cambiar de URL al seleccionar un archivo
      * @return {void}
@@ -143,7 +143,7 @@ var HTMLprototyper = (function ($) {
      * Obtiene plantilla de nuevo archivo
      * @return {void}
      */
-    var _newFileTemplate = function() {
+    var _getNewFileTemplate = function() {
         $.get('../../templates/HTMLprototyper/new-file.html', function (data) {
             _newFileTemplate = data;
         });
@@ -254,7 +254,7 @@ var HTMLprototyper = (function ($) {
             _getTemplates();
             // Obtenemos plantilla GUI para nuevo archivo
             // Así la tenemos pre-cargada
-            _newFileTemplate();
+            _getNewFileTemplate();
             // Creamos la barra
             _barInit();
         },
@@ -291,7 +291,7 @@ var Modal = (function ($) {
         load: function (content) {
             // Revisamos si existe una modal en el documento, si no existe la creamos
             if (!_exists()) {
-                // Creamos la modal, parte escondidad, luego hay que mostrarla
+                // Creamos la modal, parte escondida, luego hay que mostrarla
                 var modalDom = '<div id="HTMLprototyper-modal" class="HTMLprototyper-modal-overlay"><div class="HTMLprototyper-modal-content"></div></div>';
                 $('body').prepend(modalDom);
                 // Asigmanos comportamiendo al modal
