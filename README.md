@@ -28,6 +28,9 @@ The only important configuration to set is your email on `config.php` file.
 How to use it
 =
 
+We already told you that it's really easy to use. But, if you are that person which read all the manuals, this is the HTMLprotyper bar:
+
+![HTMLprotyper bar](http://medula.cl/HTMLprototyper/HTMLprototyper-bar.png "HTMLprotyper bar")
 
 Configuration
 =
@@ -42,7 +45,7 @@ Configuration is located in `config.php` file, and it's a simple array with the 
 + **default_template**: you can set your own default template. Just write a name of a template located at `templates/`.
 + **project_list**: `true` or `false`. For privacy reasons is configurated to `false` by default. This means that if you or others access the root folder of HTMLprototyper you will see an empty blank page. If you set it to `true` you and others will see a list of the projects and a little form where you can create new ones.
 
-Install a new version of Foundation
+Install new version of Foundation
 =
 
 .....
