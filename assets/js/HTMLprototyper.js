@@ -80,6 +80,7 @@ var HTMLprototyper = (function ($) {
         data = data.replace('{new_file}', lang.new_file);
         data = data.replace('{copy_file}', lang.copy_file);
         data = data.replace('{save}', lang.save);
+        data = data.replace('{project}', lang.project);
         data = data.replace('{project_name}', _dataBar.metadata.projectName);
         data = data.replace('{file_name}', fileMetaData[0]);
         data = data.replace('{modified}', lang.modified);
