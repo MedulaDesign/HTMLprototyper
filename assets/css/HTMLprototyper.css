@@ -95,7 +95,7 @@ html, body {
 /**
  * Modal
  */
-.HTMLprototyper-modal-overlay {
+/*.HTMLprototyper-modal-overlay {
 	z-index: 9999;
 	position: absolute;
 	top: 0;
@@ -105,14 +105,32 @@ html, body {
 	background: rgba(0, 0, 0, 0.8);
 	overflow: hidden;
 	display: none;
+}*/
+
+.HTMLprototyper-modal-overlay {
+position: fixed;
+height: 100%;
+width: 100%;
+background: black;
+background: rgba(0, 0, 0, 0.45);
+z-index: 98;
+display: none;
+top: 0;
+left: 0;
 }
 
 .HTMLprototyper-modal-content {
+	position: absolute;
+	z-index: 99;
 	width: 650px;
 	min-height: 50%;
 	background-color: white;
 	border-radius: 2px;
-	margin: 100px auto;
 	overflow: auto;
 	max-height: 80%;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
 }

@@ -12,7 +12,7 @@ var HTMLprototyper = (function ($) {
      */
     var _barInit = function () {
         _currentFile = location.href.split('/').slice(-1)[0];
-        if(_currentFile === '') {
+        if(_currentFile === '' || _currentFile === '#') {
             _currentFile = 'index.html';
         }
         $.get('../../project.php?bar', function (data) {
@@ -267,7 +267,8 @@ var Modal = (function ($) {
      * @return {void}
      */
     var _events = function () {
-        $('#HTMLprototyper-modal').find('.HTMLprototyper-modal-content').on('click', _eventClose).keyup(_eventClose);
+        $('.HTMLprototyper-modal-overlay').on('click', _eventClose);
+        $('body').off('keyup').keyup(_eventClose);
     };
     /**
      * Cierra le ventana modal
@@ -275,7 +276,8 @@ var Modal = (function ($) {
      * @return {void}
      */
     var _eventClose = function (event) {
-        console.log(event);
+        $('#HTMLprototyper-modal').hide();
+        $('.HTMLprototyper-modal-overlay').hide();
     };
     /**
      * Revisa si el modal ya existe
@@ -292,14 +294,14 @@ var Modal = (function ($) {
             // Revisamos si existe una modal en el documento, si no existe la creamos
             if (!_exists()) {
                 // Creamos la modal, parte escondida, luego hay que mostrarla
-                var modalDom = '<div id="HTMLprototyper-modal" class="HTMLprototyper-modal-overlay"><div class="HTMLprototyper-modal-content"></div></div>';
-                $('body').prepend(modalDom);
+                var modalDom = '<div class="HTMLprototyper-modal-overlay"></div><div id="HTMLprototyper-modal" class="HTMLprototyper-modal-content"></div>';
+                $('body').append(modalDom);
                 // Asigmanos comportamiendo al modal
                 _events();
             }
             // Cargamos el contenido enviado si existe
             if (content !== undefined) {
-                $('#HTMLprototyper-modal').find('.HTMLprototyper-modal-content').prepend(content);
+                $('#HTMLprototyper-modal').html(content);
             }
 
         },
@@ -307,6 +309,7 @@ var Modal = (function ($) {
             // Cargamos el contenido enviado
             this.load(content);
             // Mostramos la modal
+            $('.HTMLprototyper-modal-overlay').show();
             $('#HTMLprototyper-modal').show();
         },
         close: function () {
