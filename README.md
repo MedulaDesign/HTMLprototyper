@@ -42,7 +42,7 @@ Configuration is located in `config.php` file, and it's a simple array with the 
 + **lang**: the language which HTMLprototyper will use. Languages are located in `lang/` folder. By default we include English and Spanish. Wanna create a new translation?: just create a new file inside `lang/` and edit this configuration with the file name of your new translation.
 + **timezone**: it's not crucial, but it's recommended to set your timezone according your location. By default is configurated to `America/Santiago` (whe are from Chile, *po*!). Check the [list of supported timezones by PHP](http://cl1.php.net/timezones) and set your own.
 + **email**: list of emails separated with commas where HTMLprototyper will send the URL of new projects.
-+ **default_template**: you can set your own default template. Just write a name of a template located at `templates/`.
++ **default_template**: this is the template which HTMLprototyper will use whenever you create a new project. You can set your own default template. Just write a name of a template located at `templates/`.
 + **project_list**: `true` or `false`. For privacy reasons is configurated to `false` by default. This means that if you or others access the root folder of HTMLprototyper you will see an empty blank page. If you set it to `true` you and others will see a list of the projects and a little form where you can create new ones.
 
 Install new version of Foundation
