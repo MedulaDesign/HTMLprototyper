@@ -1,19 +1,21 @@
 <?php
 
 require_once 'bootstrap.php';
-autoload('Medula\HTMLprototyper\HTMLprototyper');
 
-$HTMLprototyper = new Medula\HTMLprototyper\HTMLprototyper();
+if ($config['project_list']) {
+	autoload('Medula\HTMLprototyper\HTMLprototyper');
 
-// Creación de nuevo proyecto
-if (isset($_POST['projectName']))
-{
-	$projectName = $_POST['projectName'];
-	$HTMLprototyper->newProject($projectName);
-}
+	$HTMLprototyper = new Medula\HTMLprototyper\HTMLprototyper();
 
-// Listado de proyectos
-$projectsList = $HTMLprototyper->listProjects();
+	// Creación de nuevo proyecto
+	if (isset($_POST['projectName']))
+	{
+		$projectName = $_POST['projectName'];
+		$HTMLprototyper->newProject($projectName);
+	}
+
+	// Listado de proyectos
+	$projectsList = $HTMLprototyper->listProjects();
 
 ?>
 <!doctype html>
@@ -40,3 +42,4 @@ $projectsList = $HTMLprototyper->listProjects();
 </div>
 </body>
 </html>
+<?php } ?>

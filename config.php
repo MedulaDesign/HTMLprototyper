@@ -7,4 +7,5 @@ return array(
 	'timezone' => 'America/Santiago',
 	'email' => 'nikolas@medula.cl', // email1@mail.com, email2@email.com
 	'default_template' => 'blog.html',
+	'project_list' => false,
 );
