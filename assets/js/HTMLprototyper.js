@@ -276,8 +276,10 @@ var Modal = (function ($) {
      * @return {void}
      */
     var _eventClose = function (event) {
-        $('#HTMLprototyper-modal').hide();
-        $('.HTMLprototyper-modal-overlay').hide();
+        if (event.type === 'click' || (event.type === 'keyup' && event.which === 27)) {
+            $('#HTMLprototyper-modal').hide();
+            $('.HTMLprototyper-modal-overlay').hide();
+        }
     };
     /**
      * Revisa si el modal ya existe
