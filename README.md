@@ -14,7 +14,7 @@ Feel free to break it, find bugs or do what you want of it.
 Requirements
 =
 
-PHP 5.1 or higher
+PHP 5.3 or higher
 
 Installation
 =
