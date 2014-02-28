@@ -210,7 +210,6 @@ var HTMLprototyper = (function ($) {
      * @return {void}
      */
     var _saveFileEvent = function (btn) {
-        console.log(btn);
         var $html = $('html').clone();
         $html.find('body').removeClass('HTMLprototyper-bar-open');
         $html.find('#HTMLprototyper-bar').remove();
@@ -218,6 +217,7 @@ var HTMLprototyper = (function ($) {
         // Esto viene de una extension de Chrome, la eliminamos por
         // si alguien más también la tiene
         $html.find('#window-resizer-tooltip').remove();
+        $(btn).html($(btn).html() + ' <img src="' + _loaderImg + '">').attr('disabled', 'disabled');
         $.post('../../project.php', {save: true, html: $html.html(), fileName: _currentFile}, function (data) {
             // Nada que hacer por el momento :P
         }).always(function () {

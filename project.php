@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Este archivo funciona como pseudo-API
+ * Se encarga de procesar las acciones de la barra
+ */
+
 // Todas las consultas deben venir vía AJAX
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
     require_once 'bootstrap.php';

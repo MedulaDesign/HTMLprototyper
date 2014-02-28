@@ -1,3 +1,7 @@
+html, body {
+	height: 100%;
+}
+
 .HTMLprototyper-bar {
 	display: none;
 	position: absolute;
@@ -61,6 +65,9 @@
 
 .HTMLprototyper-templates ul {
 	list-style-type: none;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	overflow: auto;
 }
 
 .HTMLprototyper-templates li {
@@ -68,15 +75,21 @@
 	text-align: center;
 	float: left;
 	cursor: pointer;
+	margin-top: 20px;
 }
 
-.HTMLprototyper-templates li:hover {
-	background-color: yellow;
+.HTMLprototyper-templates span {
+	font-weight: bold;
 }
 
 .HTMLprototyper-templates img {
 	display: block;
 	margin: 0 auto;
+	border: 1px solid #eee;
+}
+
+.HTMLprototyper-templates img:hover {
+	border: 1px solid #dadada;
 }
 
 /**
@@ -88,7 +101,7 @@
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 900px;
+	height: 100%;
 	background: rgba(0, 0, 0, 0.8);
 	overflow: hidden;
 	display: none;
@@ -96,9 +109,10 @@
 
 .HTMLprototyper-modal-content {
 	width: 650px;
-	height: 650px;
+	min-height: 50%;
 	background-color: white;
 	border-radius: 2px;
 	margin: 100px auto;
 	overflow: auto;
+	max-height: 80%;
 }

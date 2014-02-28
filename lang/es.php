@@ -7,7 +7,6 @@ return array(
     'new_file' => 'Nuevo archivo',
     'copy_file' => 'Copiar archivo',
     'save' => 'Guardar',
-    'new_project' => 'Nuevo Proyecto',
     'created' => 'Creado el',
     'modified' => 'Modificado el',
     'email_subjet' => '[HTMLprototyper] Nuevo Proyecto: {project}',
