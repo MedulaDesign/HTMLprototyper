@@ -271,15 +271,22 @@ var Modal = (function ($) {
         $('body').off('keyup').keyup(_eventClose);
     };
     /**
-     * Cierra le ventana modal
+     * Maneja el evento de cierra de la modal
      * @param  {object} event
      * @return {void}
      */
     var _eventClose = function (event) {
         if (event.type === 'click' || (event.type === 'keyup' && event.which === 27)) {
-            $('#HTMLprototyper-modal').hide();
-            $('.HTMLprototyper-modal-overlay').hide();
+            _close();
         }
+    };
+    /**
+     * Esconde la modal
+     * @return {void}
+     */
+    var _close = function () {
+        $('#HTMLprototyper-modal').hide();
+        $('.HTMLprototyper-modal-overlay').hide();
     };
     /**
      * Revisa si el modal ya existe
@@ -315,7 +322,7 @@ var Modal = (function ($) {
             $('#HTMLprototyper-modal').show();
         },
         close: function () {
-
+            _close();
         }
     };
 })(jQuery);
