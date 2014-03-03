@@ -219,8 +219,19 @@ var HTMLprototyper = (function ($) {
         // si alguien más también la tiene
         $html.find('#window-resizer-tooltip').remove();
         $(btn).html($(btn).html() + ' <img src="' + _loaderImg + '">').attr('disabled', 'disabled');
-        $.post('../../project.php', {save: true, html: '<html>' + $html.html() + '</html>', fileName: _currentFile}, function (data) {
-            // Nada que hacer por el momento :P
+        $.ajax({
+            type: 'POST',
+            url: '../../project.php',
+            cache: false,
+            dataType: 'text',
+            data: {
+                save: true,
+                html: '<html>' + $html.html() + '</html>',
+                fileName: _currentFile
+            },
+            success: function (data) {
+                // Nada que hacer por el momento :P
+            }
         }).always(function () {
             $(btn).removeAttr('disabled').find('img').remove();
         });
