@@ -6,7 +6,7 @@ Simple live HTML prototyping tool. You edit on Firebug or Chrome DevTools, this 
 Live demo
 =
 
-You can see HTMLprototyper in action here: http://medula.cl/HTMLprototyper/projects/543b277c8345a74a821e186a657a34acd0889841
+You can see HTMLprototyper in action here: http://medula.cl/HTMLprototyper/projects/9aa6fb0dec2c55faa8f28c55d9c641851898f65f/
 
 Feel free to break it, find bugs or do what you want of it. The demo is restarted each hour.
 
