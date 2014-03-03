@@ -223,15 +223,13 @@ var HTMLprototyper = (function ($) {
             type: 'POST',
             url: '../../project.php',
             cache: false,
-            dataType: 'text',
             data: {
                 save: true,
-                html: '<html>' + $html.html() + '</html>',
+                html: JSON.stringify('<html>' + $html.html() + '</html>'),
                 fileName: _currentFile
-            },
-            success: function (data) {
-                // Nada que hacer por el momento :P
             }
+        }).done(function (data) {
+            // Nada que hacer por el momento :P
         }).always(function () {
             $(btn).removeAttr('disabled').find('img').remove();
         });

@@ -46,7 +46,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND strtolower($_SERVER['HTTP_X_REQ
             echo json_encode($data);
         // Guarda el archivo
         } elseif (isset($_POST['save']) and isset($_POST['html']) and isset($_POST['fileName'])) {
-            $project->saveFile($_POST['fileName'], $_POST['html']);
+            $project->saveFile($_POST['fileName'], json_decode($_POST['html']));
         } elseif (isset($_GET['newProject']) and isset($_GET['projectName'])) {
             $HTMLprototyper = new Medula\HTMLprototyper\HTMLprototyper();
             $projectFolder = $HTMLprototyper->newProject($_GET['projectName']);
