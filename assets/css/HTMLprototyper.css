@@ -4,7 +4,8 @@ html, body {
 
 .HTMLprototyper-bar {
 	display: none;
-	position: absolute;
+	position: fixed;
+	z-index: 50;
 	top: 0;
 	height: 60px;
 	width: 100%;
