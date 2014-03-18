@@ -82,6 +82,13 @@ class Project
      */
     public function saveFile($fileName, $html)
     {
+        /**
+         * Si 'magic_quotes_gpc' esta activo, agrega backslashes para
+         * escapar comillas y backslashes, hay que removarlos
+         */
+        if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+            $html = stripslashes($html);
+        }
         $file = new \SPLFileObject(HTMLprototyper::$projectsFolder . '/' . $this->projectFolder . '/' . $fileName, 'w');
         $file->fwrite($html . PHP_EOL);
         // Actualizamos el meta-data
