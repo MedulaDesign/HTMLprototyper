@@ -4,7 +4,6 @@ class HTMLprototyper
 {
     public static $projectsFolder = 'projects';
     public static $templatesFolder = 'templates';
-    private $projectsList = 'projects.txt';
     public $config;
     public $lang;
 
@@ -46,8 +45,6 @@ class HTMLprototyper
             $projectFolder = $this->folderName($projectName);
             // Creamos el directorio
             mkdir($this::$projectsFolder . '/' . $projectFolder);
-            // Guardamos la relacion del nombre del proyecto con el directorio
-            $this->addProjecToList($projectName, $projectFolder);
             // Creamos un archivo meta-data dentro del proyecto
             $this->newProjectMetaData($projectFolder, $projectName);
             // Creamos el index.html en base al template definido
@@ -133,30 +130,19 @@ class HTMLprototyper
     }
 
     /**
-     * Agrega un proyecto a la lista de proyectos
-     * En esta lista se lleva el control de los
-     * proyectos activos y la relación del nombre
-     * con carpeta
-     * @param string $projectName   Nombre del proyecto
-     * @param string $projectFolder Carpeta del proyecto
-     */
-    private function addProjecToList($projectName, $projectFolder)
-    {
-        $projectsList = new \SPLFileObject($this::$projectsFolder . '/' . $this->projectsList, 'a');
-        $projectsList->fwrite($projectName . '::' . $projectFolder . PHP_EOL);
-    }
-
-    /**
-     * Lista los proyectos activos
+     * Lista los proyectos activos, recorriendo las carpetas
+     * y obteniendo los nombres desde el meta.txt
      * @return array Lista de proyectos
      */
     public function listProjects()
     {
         $projects = array();
-        $projectsList = new \SPLFileObject($this::$projectsFolder . '/' . $this->projectsList, 'a+');
-        foreach ($projectsList as $line) {
-            if (!$projectsList->eof()) {
-                $projects[] = explode('::', trim($line));
+        $files = glob($this::$projectsFolder . '/*');
+        foreach ($files as $key => $folder) {
+            if (is_dir($folder)) {
+                $folder = explode('/', $folder);
+                $project = new Project($folder[1]);
+                $projects[] = array($project->projectMetaData['projectName'], $folder[1]);
             }
         }
         return $projects;

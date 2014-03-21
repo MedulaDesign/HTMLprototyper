@@ -144,6 +144,7 @@ class Project
      */
     private function projectMetaData()
     {
+        $HTMLprototyper = new HTMLprototyper();
         $metaData = array();
         $fileMeta = new \SPLFileObject(HTMLprototyper::$projectsFolder . '/' . $this->projectFolder . '/meta.txt', 'a+');
         $lineNumber = 1;
@@ -169,7 +170,21 @@ class Project
                     // de archivos (-) o fechas, mientras no sea un separador
                     // guardamos ambas fechas
                     } elseif (trim($line) !== '-') {
-                        $line = trim(str_replace('Created:', '', str_replace('Modified:', '', $line)));
+                        $line = trim($line);
+                        // Damos formato a las fechas
+                        if (strpos($line, 'Created:') !== false) {
+                            $date = str_replace('Created:', '', $line);
+                        } else {
+                            $date = str_replace('Modified:', '', $line);
+                        }
+                        // Por si la fecha no tiene un formato correcto y fue
+                        // modificada manualmente en el archivo meta.txt
+                        try {
+                            $date = new \DateTime($date);
+                        } catch(Exception $e) {
+                            $date = new \DateTime('00-00-00 00:00');
+                        }
+                        $line = $date->format($HTMLprototyper->config['date_format']);
                         $metaData['files'][$fileCount][] = $line;
                     // Es un separador de archivos (-), aumentamos el contador
                     // de archivos
