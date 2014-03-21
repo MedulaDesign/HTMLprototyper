@@ -4,6 +4,7 @@ require_once 'bootstrap.php';
 
 if ($config['project_list']) {
 	autoload('Medula\HTMLprototyper\HTMLprototyper');
+	autoload('Medula\HTMLprototyper\Project');
 
 	$HTMLprototyper = new Medula\HTMLprototyper\HTMLprototyper();
 
