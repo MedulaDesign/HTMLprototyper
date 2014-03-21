@@ -120,6 +120,32 @@ class Project
     }
 
     /**
+     * Elimina el proyecto por completo, incluyendo todas las carpetas
+     * que pueden estar dentro
+     * @return void
+     */
+    public function deleteProject($dir = null)
+    {
+        // Si el directorio está nulo, ocupamos la raíz del proyecto
+        if (is_null($dir)) {
+            $dir = HTMLprototyper::$projectsFolder . '/' . $this->projectFolder;
+        }
+        // Recorremos el directorio eliminando todos los archivos para luego
+        // poder eliminarlo
+        $files = glob($dir .'/*');
+        foreach ($files as $key => $file) {
+            // Si es un directorio, lo recorremos recursivamente
+            if (is_dir($file)) {
+                $this->deleteProject($file);
+            } else {
+                // Eliminamos el archivo
+                unlink($file);
+            }
+        }
+        rmdir($dir);
+    }
+
+    /**
      * Valida que el nombre de archivo sea correcto
      * y que la plantilla exista
      * @param  string $fileName Nombre del archivo

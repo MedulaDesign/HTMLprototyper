@@ -93,6 +93,7 @@ var HTMLprototyper = (function ($) {
         data = data.replace('{created}', lang.created);
         data = data.replace('{created_date}', fileMetaData[1]);
         data = data.replace('{new_project}', lang.new_project);
+        data = data.replace('{delete_project}', lang.delete_project);
         return data;
     };
     /**
@@ -134,8 +135,11 @@ var HTMLprototyper = (function ($) {
         $bar.find('button[data-role="delete"]').on('click', function () {
             _deleteFileEvent(this);
         });
-        $bar.find('button[data-role="project"]').on('click', function () {
+        $bar.find('button[data-role="new-project"]').on('click', function () {
             _newProjectEvent(this);
+        });
+        $bar.find('button[data-role="delete-project"]').on('click', function () {
+            _deleteProjectEvent(this);
         });
     };
     /**
@@ -296,6 +300,21 @@ var HTMLprototyper = (function ($) {
             });
         } else {
             alert(_dataBar.lang.js_empty_name);
+        }
+    };
+
+    var _deleteProjectEvent = function (btn) {
+        if (confirm(_dataBar.lang.js_delete_project_confirm)) {
+            $(btn).html($(btn).html() + ' <img src="' + _loaderImg + '">').attr('disabled', 'disabled');
+            $.ajax({
+                url: '../../project.php?deleteProject',
+                cache: false,
+                success: function (data) {
+                    document.location.href = '../../';
+                }
+            }).always(function () {
+                $(btn).removeAttr('disabled').find('img').remove();
+            });
         }
     };
 

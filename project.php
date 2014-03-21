@@ -58,6 +58,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND strtolower($_SERVER['HTTP_X_REQ
             if (preg_match('/\b[0-9a-f]{40}\b/', $projectFolder) > 0) {
                 echo $projectFolder;
             }
+        } elseif (isset($_GET['deleteProject'])) {
+            $project->deleteProject();
         }
     }
 }
