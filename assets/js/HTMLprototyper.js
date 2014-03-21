@@ -15,9 +15,13 @@ var HTMLprototyper = (function ($) {
         if(_currentFile === '' || _currentFile === '#') {
             _currentFile = 'index.html';
         }
-        $.get('../../project.php?bar', function (data) {
-            _dataBar = JSON.parse(data);
-            _createBar();
+        $.ajax({
+            url: '../../project.php?bar',
+            cache: false,
+            success: function (data) {
+                _dataBar = JSON.parse(data);
+                _createBar();
+            }
         });
     };
     /**
@@ -79,6 +83,7 @@ var HTMLprototyper = (function ($) {
         fileMetaData = _fileMetaData();
         data = data.replace('{new_file}', lang.new_file);
         data = data.replace('{copy_file}', lang.copy_file);
+        data = data.replace('{delete_file}', lang.delete_file);
         data = data.replace('{save}', lang.save);
         data = data.replace('{project}', lang.project);
         data = data.replace('{project_name}', _dataBar.metadata.projectName);
@@ -126,6 +131,9 @@ var HTMLprototyper = (function ($) {
         $bar.find('button[data-role="save"]').on('click', function () {
             _saveFileEvent(this);
         });
+        $bar.find('button[data-role="delete"]').on('click', function () {
+            _deleteFileEvent(this);
+        });
         $bar.find('button[data-role="project"]').on('click', function () {
             _newProjectEvent(this);
         });
@@ -135,9 +143,13 @@ var HTMLprototyper = (function ($) {
      * @return {void}
      */
     var _getTemplates = function () {
-        $.get('../../project.php?templates', function (data) {
-            _templates = JSON.parse(data);
-            _templates = _templates.templates;
+        $.ajax({
+            url: '../../project.php?templates',
+            cache: false,
+            success: function (data) {
+                _templates = JSON.parse(data);
+                _templates = _templates.templates;
+            }
         });
     };
     /**
@@ -145,8 +157,12 @@ var HTMLprototyper = (function ($) {
      * @return {void}
      */
     var _getNewFileTemplate = function() {
-        $.get('../../templates/HTMLprototyper/new-file.html', function (data) {
-            _newFileTemplate = data;
+        $.ajax({
+            url: '../../templates/HTMLprototyper/new-file.html',
+            cache: false,
+            success: function (data) {
+                _newFileTemplate = data;
+            }
         });
     };
     /**
@@ -168,12 +184,16 @@ var HTMLprototyper = (function ($) {
             fileName = prompt(_dataBar.lang.js_new_file_name);
             // Si el nombre no está vacío y no tiene caracateres extraños
             if ($.trim(fileName) !== '' && fileName.match(/^[a-z0-9\-\_]+$/i)) {
-                $.get('../../project.php?newFile&fileName=' + fileName + '&template=' + template, function (data) {
-                    data = JSON.parse(data);
-                    if (data.error === false) {
-                        document.location.href = fileName + '.html';
-                    } else {
-                        alert(data.msg);
+                $.ajax({
+                    url: '../../project.php?newFile&fileName=' + fileName + '&template=' + template,
+                    cache: false,
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        if (data.error === false) {
+                            document.location.href = fileName + '.html';
+                        } else {
+                            alert(data.msg);
+                        }
                     }
                 });
             } else {
@@ -192,12 +212,16 @@ var HTMLprototyper = (function ($) {
         // Si el nombre no está vacío y no tiene caracateres extraños
         if ($.trim(newFileName) !== '' && newFileName.match(/^[a-z0-9\-\_]+$/i)) {
             $(btn).html($(btn).html() + ' <img src="' + _loaderImg + '">').attr('disabled', 'disabled');
-            $.get('../../project.php?copyFile&fileName=' + _currentFile + '&newFileName=' + newFileName, function (data) {
-                data = JSON.parse(data);
-                if (data.error === false) {
-                    document.location.href = newFileName + '.html';
-                } else {
-                    alert(data.msg);
+            $.ajax({
+                url: '../../project.php?copyFile&fileName=' + _currentFile + '&newFileName=' + newFileName,
+                cache: false,
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.error === false) {
+                        document.location.href = newFileName + '.html';
+                    } else {
+                        alert(data.msg);
+                    }
                 }
             }).always(function () {
                 $(btn).removeAttr('disabled').find('img').remove();
@@ -226,6 +250,29 @@ var HTMLprototyper = (function ($) {
         });
     };
     /**
+     * Elimina un archivo en el servidor
+     * @return {void}
+     */
+    var _deleteFileEvent = function (btn) {
+        if (confirm(_dataBar.lang.js_delete_file_confirm)) {
+            $(btn).html($(btn).html() + ' <img src="' + _loaderImg + '">').attr('disabled', 'disabled');
+            $.ajax({
+                url: '../../project.php?deleteFile&fileName=' + _currentFile,
+                cache: false,
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.error === false) {
+                        document.location.href = 'index.html';
+                    } else {
+                        alert(data.msg);
+                    }
+                }
+            }).always(function () {
+                $(btn).removeAttr('disabled').find('img').remove();
+            });
+        }
+    };
+    /**
      * Crea un nuevo proyecto
      * @return {void}
      */
@@ -234,11 +281,15 @@ var HTMLprototyper = (function ($) {
         // Si el nombre no está vacío
         if ($.trim(newProjectName) !== '') {
             $(btn).html($(btn).html() + ' <img src="' + _loaderImg + '">').attr('disabled', 'disabled');
-            $.get('../../project.php?newProject&projectName=' + newProjectName, function (data) {
-                if (data !== '') {
-                    document.location.href = '../' + data;
-                } else {
-                    alert(_dataBar.lang.js_new_project_error);
+            $.ajax({
+                url: '../../project.php?newProject&projectName=' + newProjectName,
+                cache: false,
+                success: function (data) {
+                    if (data !== '') {
+                        document.location.href = '../' + data;
+                    } else {
+                        alert(_dataBar.lang.js_new_project_error);
+                    }
                 }
             }).always(function () {
                 $(btn).removeAttr('disabled').find('img').remove();
