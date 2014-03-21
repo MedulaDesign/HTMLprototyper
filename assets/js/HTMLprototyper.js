@@ -46,7 +46,6 @@ var HTMLprototyper = (function ($) {
                 _buttonsEvents();
                 // Mostramos la barra
                 $('body').addClass('HTMLprototyper-bar-open');
-                $bar.show();
             }
         });
     };

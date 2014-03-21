@@ -16,6 +16,7 @@ html, body {
 
 .HTMLprototyper-bar-open {
 	padding-top: 60px;
+	display: block;
 }
 
 .HTMLprototyper-bar-files {
