@@ -83,8 +83,8 @@ class Project
     public function saveFile($fileName, $html)
     {
         /**
-         * Si 'magic_quotes_gpc' esta activo, agrega backslashes para
-         * escapar comillas y backslashes, hay que removarlos
+         * Si 'magic_quotes_gpc' esta activo (que agrega backslashes para
+         * escapar comillas y backslashes) hay que removarlos
          */
         if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
             $html = stripslashes($html);
@@ -94,6 +94,29 @@ class Project
         // Actualizamos el meta-data
         $metaData = array('Modified' => date('Y-m-d h:i'));
         $this->updateFileMetaData($fileName, $metaData);
+    }
+
+    /**
+     * Elimina un archivo del proyecto
+     * @param  string $fileName Nombre del archivo
+     * @return array
+     */
+    public function deleteFile($fileName)
+    {
+        $HTMLprototyper = new HTMLprototyper();
+        $error = false;
+        $msg = '';
+        // Si el es distinto al index.html (no se puede borrar) y existe
+        if ($fileName !== 'index.html' and is_file(HTMLprototyper::$projectsFolder . '/' . $this->projectFolder .'/'. $fileName)) {
+            // Eliminamos el archivo
+            unlink(HTMLprototyper::$projectsFolder . '/' . $this->projectFolder .'/'. $fileName);
+            // Lo eliminamos del meta.txt
+            $this->deleteFileMetaData($fileName);
+        } else {
+            $error = true;
+            $msg = $HTMLprototyper->lang['js_delete_file_error'];;
+        }
+        return array('error' => $error, 'msg' => $msg);
     }
 
     /**
@@ -151,6 +174,7 @@ class Project
         $fileCount = 0;
         foreach ($fileMeta as $line) {
             if (!$fileMeta->eof()) {
+                $line = trim($line);
                 // Nombre del proyecto
                 if ($lineNumber === 1) {
                     $projectName = explode(':', $line);
@@ -170,7 +194,6 @@ class Project
                     // de archivos (-) o fechas, mientras no sea un separador
                     // guardamos ambas fechas
                     } elseif (trim($line) !== '-') {
-                        $line = trim($line);
                         // Damos formato a las fechas
                         if (strpos($line, 'Created:') !== false) {
                             $date = str_replace('Created:', '', $line);
@@ -199,7 +222,12 @@ class Project
     }
 
     /**
-     * Actualiza el meta-data de un archivo
+     * Actualiza el meta-data de un archivo, ya sea cambiando los datos
+     * o modificando el meta-data enviado.
+     * Por ejemplo, si deseo modificar la fecha de modificación del
+     * archivo index.html, $metaData debe contener la key correspondiende
+     * y el nuevo valor:
+     *     array('Modified' => '2014-03-03 03:03:03')
      * @param  string $fileName Nombre del archivo
      * @param  array $metaData  Meta-data del archivo a modificar
      * @return void
@@ -207,34 +235,89 @@ class Project
     private function updateFileMetaData($fileName, $metaData)
     {
         $fileMeta = new \SPLFileObject(HTMLprototyper::$projectsFolder . '/' . $this->projectFolder . '/meta.txt', 'a+');
-        $fileMetaTemp = new \SplTempFileObject();
+        $fileMetaTemp = new \SplTempFileObject(); // Nuevo archivo meta.txt
         $lineNumber = 1;
         $isFile = false;
         foreach ($fileMeta as $line) {
             if (!$fileMeta->eof()) {
+                $line_ = trim($line);
                 // Marcamos un flag cuando identificamos al archivo
-                if ($lineNumber % 4 === 0 and trim($line) === $fileName) {
+                if ($lineNumber % 4 === 0 and $line_ === $fileName) {
                     $isFile = true;
                 // Estamos dentro del archivo mientras la linea no contenga '-'
-                } elseif ($isFile and trim($line) !== '-'){
-                    $data = explode(':', $line);
+                } elseif ($isFile and $line_ !== '-') {
+                    $data = explode(':', $line_);
                     $metaKey = trim($data[0]);
                     if (array_key_exists($metaKey, $metaData)) {
-                        $line = $metaKey . ':' . $metaData[$metaKey] . PHP_EOL;
+                        $line_ = $metaKey . ':' . $metaData[$metaKey] . PHP_EOL;
                     }
                 // Estamos fuera del archivo
                 } else {
                   $isFile = false;
-              }
-              $lineNumber++;
-          }
-          $fileMetaTemp->fwrite($line);
-      }
+                }
+                $lineNumber++;
+            }
+            $fileMetaTemp->fwrite($line);
+        }
         // Re-escribirmos meta.txt con los cambios que tenemos en temp
-      $fileMeta->seek(0);
-      $fileMeta->ftruncate(0);
-      foreach ($fileMetaTemp as $line) {
-          $fileMeta->fwrite($line);
-      }
-  }
+        $fileMeta->seek(0);
+        $fileMeta->ftruncate(0);
+        foreach ($fileMetaTemp as $line) {
+            $fileMeta->fwrite($line);
+        }
+    }
+
+    /**
+     * Elimina del meta-data el archivo enviado
+     * @param  string $fileName Nombre del archivo
+     * @return void
+     */
+    private function deleteFileMetaData($fileName)
+    {
+        $fileMeta = new \SPLFileObject(HTMLprototyper::$projectsFolder . '/' . $this->projectFolder . '/meta.txt', 'a+');
+        $fileMetaTemp = new \SplTempFileObject(); // Nuevo archivo meta.txt
+        $lineNumber = 0; // Posición donde parte el archivo
+        // Buscamos la posición del archivo
+        foreach ($fileMeta as $line) {
+            if (!$fileMeta->eof()) {
+                $line = trim($line);
+                // Identificamos la línea donde parte los meta-datos del archivo
+                // Debe ser la línea - 1 debido a que tenemos que remover también
+                // el caracater '-' que separa los archivos
+                if ($line === $fileName) {
+                    $lineNumber = $fileMeta->key() - 1;
+                    break;
+                }
+            }
+        }
+        // Recorremos nuevamenta el meta.txt y no tomaremos en cuenta
+        // los datos del archivo a remover. Todo siempre y cuando
+        // se haya encontrado el archivo anteriormente
+        if ($lineNumber > 0) {
+            $fileMeta->seek(0); // Partimos en la 1era linea
+            $isFile = false;
+            foreach ($fileMeta as $line) {
+                if (!$fileMeta->eof()) {
+                    $line_ = trim($line);
+                    // Identificamos donde parte el archivo
+                    if ($fileMeta->key() === $lineNumber) {
+                        $isFile = true;
+                    // Si la linea no contiene '-' o no está vacia (fin del documento)
+                    // significa que son datos que deben ser agregados el nuevo meta.txt
+                    // y significa que ya salimos de los meta-datos del archivo a eliminar
+                    // por lo tanto dejamos $isFile en false
+                    } elseif (!($isFile and $line_ !== '-' and $line_ !== '')) {
+                        $isFile = false;
+                        $fileMetaTemp->fwrite($line);
+                    }
+                }
+            }
+        }
+        // Re-escribirmos meta.txt con los cambios que tenemos en temp
+        $fileMeta->seek(0);
+        $fileMeta->ftruncate(0);
+        foreach ($fileMetaTemp as $line) {
+            $fileMeta->fwrite($line);
+        }
+    }
 }

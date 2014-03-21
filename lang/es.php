@@ -6,6 +6,7 @@ return array(
     'project_list' => 'Listado de Proyectos',
     'new_file' => 'Nuevo archivo',
     'copy_file' => 'Copiar archivo',
+    'delete_file' => 'Eliminar archivo',
     'save' => 'Guardar',
     'created' => 'Creado el',
     'modified' => 'Modificado el',
@@ -18,8 +19,10 @@ return array(
     'js_new_project_name' => 'Nombre del proyecto',
     'js_alphanumeric' => 'Sólo se permiten letras, números y guiones',
     'js_empty_name' => 'El nombre no puede estar vacío',
+    'js_delete_file_confirm' => '¿Estás seguro que deseas eliminar el archivo?. Esto no se puede revertir.',
     'js_new_file_error' => 'Ya existe un archivo con ese nombre, la plantilla no existe o el nombre es inválido',
     'js_copy_file_error' => 'Ya existe un archivo con ese nombre, el archivo a copiar no existe o el nombre es inválido',
     'js_save_file_error' => 'El archivo no existe... hmmmm',
-    'js_new_project_error' => 'No se pudo crear el proyecto'
+    'js_new_project_error' => 'No se pudo crear el proyecto',
+    'js_delete_file_error' => 'No se pudo eliminar el archivo, por favor vuelve a intentarlo. Si estás intenando eliminar \'index.html\' debes eliminar todo el proyecto',
 );

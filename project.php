@@ -47,6 +47,10 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND strtolower($_SERVER['HTTP_X_REQ
         // Guarda el archivo
         } elseif (isset($_POST['save']) and isset($_POST['html']) and isset($_POST['fileName'])) {
             $project->saveFile($_POST['fileName'], $_POST['html']);
+        // Eliminar el archivo
+        } elseif (isset($_GET['deleteFile']) and isset($_GET['fileName'])) {
+            echo json_encode($project->deleteFile($_GET['fileName']));
+        // Nuevo proyecto
         } elseif (isset($_GET['newProject']) and isset($_GET['projectName'])) {
             $HTMLprototyper = new Medula\HTMLprototyper\HTMLprototyper();
             $projectFolder = $HTMLprototyper->newProject($_GET['projectName']);
