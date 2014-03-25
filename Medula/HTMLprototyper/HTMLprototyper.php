@@ -142,10 +142,8 @@ class HTMLprototyper
     {
         $metaData = new \SPLFileObject($this::$projectsFolder . '/'. $projectFolder . '/log.txt', 'a');
         // Remplazamos los placeholders si existen
-        if (count($placeholders) > 0) {
-            foreach ($placeholders as $key => $placeholder) {
-                $msg = str_replace('{' . $key . '}', $placeholder, $msg);
-            }
+        foreach ($placeholders as $key => $placeholder) {
+            $msg = str_replace('{' . $key . '}', $placeholder, $msg);
         }
         $metaData->fwrite(date('Y-m-d H:i') . ' ['.$_SERVER['REMOTE_ADDR'].'] - ' . $msg . PHP_EOL);
     }
