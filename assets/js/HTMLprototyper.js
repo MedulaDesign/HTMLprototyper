@@ -175,7 +175,7 @@ var HTMLprototyper = (function ($) {
      */
     var _newFileEvent = function (btn) {
         // Cargamos la plantilla
-        Modal.load(_newFileTemplate);
+        HTMLprototyperModal.load(_newFileTemplate);
         // Agregamos las plantillas existente a la modal
         var $template = $('#HTMLprototyper-modal').find('.HTMLprototyper-templates ul');
         for (var template in _templates) {
@@ -205,7 +205,7 @@ var HTMLprototyper = (function ($) {
             }
         });
         // Abrimos la modal
-        Modal.open();
+        HTMLprototyperModal.open();
     };
     /**
      * Genera una copia del archivo que se esta editando
@@ -333,7 +333,7 @@ var HTMLprototyper = (function ($) {
     };
 })(jQuery);
 
-var Modal = (function ($) {
+var HTMLprototyperModal = (function ($) {
     /**
      * Asigna eventos a la ventana modal
      * @return {void}
