@@ -27,4 +27,12 @@ return array(
     'js_save_file_error' => 'El archivo no existe... hmmmm',
     'js_new_project_error' => 'No se pudo crear el proyecto',
     'js_delete_file_error' => 'No se pudo eliminar el archivo, por favor vuelve a intentarlo. Si estás intenando eliminar \'index.html\' debes eliminar todo el proyecto',
+    /**
+     * Log
+     */
+    'log_project_created' => 'Proyecto creado',
+    'log_new_file' => 'Nuevo archivo: {file_name}',
+    'log_copy_file' => 'Nuevo archivo: {file_name} (copiado de {copy_name})',
+    'log_save_file' => 'Archivo guardado: {file_name}',
+    'log_delete_file' => 'Archivo eliminado: {file_name}',
 );
