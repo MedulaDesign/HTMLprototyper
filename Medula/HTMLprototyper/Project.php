@@ -82,6 +82,7 @@ class Project
      */
     public function saveFile($fileName, $html)
     {
+        $HTMLprototyper = new HTMLprototyper();
         /**
          * Si 'magic_quotes_gpc' esta activo (que agrega backslashes para
          * escapar comillas y backslashes) hay que removarlos
@@ -92,8 +93,12 @@ class Project
         $file = new \SPLFileObject(HTMLprototyper::$projectsFolder . '/' . $this->projectFolder . '/' . $fileName, 'w');
         $file->fwrite($html . PHP_EOL);
         // Actualizamos el meta-data
-        $metaData = array('Modified' => date('Y-m-d h:i'));
+        $modifiedDate = date('Y-m-d h:i');
+        $metaData = array('Modified' => $modifiedDate);
         $this->updateFileMetaData($fileName, $metaData);
+        // Retornamos la nueva fecha de modificación
+        $modifiedDate = new \DateTime($modifiedDate);
+        return $modifiedDate->format($HTMLprototyper->config['date_format']);
     }
 
     /**

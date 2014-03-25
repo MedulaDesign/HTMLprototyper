@@ -248,7 +248,8 @@ var HTMLprototyper = (function ($) {
         $html.find('#window-resizer-tooltip').remove();
         $(btn).html($(btn).html() + ' <img src="' + _loaderImg + '">').attr('disabled', 'disabled');
         $.post('../../project.php', {save: true, html: '<html>' + $html.html() + '</html>', fileName: _currentFile}, function (data) {
-            // Nada que hacer por el momento :P
+            // Modificamos la fecha de la barra
+            $('#HTMLprototyper-bar-modified-date').text(data);
         }).always(function () {
             $(btn).removeAttr('disabled').find('img').remove();
         });
