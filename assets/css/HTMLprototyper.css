@@ -18,6 +18,18 @@ html, body {
 	padding-top: 60px;
 }
 
+.HTMLprototyper-bar-open.closed{
+    padding-top: 0;
+}
+
+.HTMLprototyper-bar-open.closed .HTMLprototyper-bar{
+    display:none;
+}
+
+.HTMLprototyper-bar-open .HTMLprototyper-bar{
+    display:block;
+}
+
 .HTMLprototyper-bar-files {
 	float: left;
 }
@@ -123,4 +135,41 @@ html, body {
 	right: 0;
 	bottom: 0;
 	margin: auto;
+}
+
+/**
+* Toggle
+*/
+#HTMLprototyper-bar-toggle{
+	display: block;
+	width:40px;
+	height:40px;
+	margin: 0;
+	padding: 0;
+	position:fixed;
+	top: 60px;
+	left:0%;
+	background: #222;
+	border: 1px solid #555;
+	border-top: none;
+	z-index: 51;
+}
+#HTMLprototyper-bar-toggle:after{
+	display: block;
+	content: " ";
+	width:0px;
+	height:0px;
+	position:absolute;
+	top:8px;
+	left:12px;
+	border: 8px solid transparent;
+	border-bottom: 8px solid #FFF;
+}
+.closed #HTMLprototyper-bar-toggle{
+	top:0;
+}
+.closed #HTMLprototyper-bar-toggle:after{
+	border: 8px solid transparent;
+	border-top: 8px solid #FFF;
+	top: 15px;
 }

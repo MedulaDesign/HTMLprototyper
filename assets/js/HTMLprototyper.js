@@ -141,6 +141,9 @@ var HTMLprototyper = (function ($) {
         $bar.find('button[data-role="delete-project"]').on('click', function () {
             _deleteProjectEvent(this);
         });
+        $('#HTMLprototyper-bar-toggle').on('click', function () {
+            _toggleBar();
+        });
     };
     /**
      * Obtiene lista de plantillas disponibles
@@ -316,6 +319,15 @@ var HTMLprototyper = (function ($) {
             }).always(function () {
                 $(btn).removeAttr('disabled').find('img').remove();
             });
+        }
+    };
+
+    var _toggleBar = function () {
+        var $body = $('body');
+        if( $body.hasClass('closed') ){
+            $body.removeClass('closed');
+        }else{
+            $body.addClass('closed');
         }
     };
 
