@@ -43,6 +43,8 @@ class Project
             $HTMLprototyper->createFromTemplate($templateFile, $this->projectMetaData['projectName'], $this->projectFolder, $fileName, $this->projectMetaData['foundationVersion']);
             // Lo agregamos al meta.txt
             $HTMLprototyper->newFileMetaData($fileName, $this->projectFolder);
+            // Lo agregamos al log.txt
+            $HTMLprototyper->newProjectLog($this->projectFolder, $this->projectMetaData['projectName'], $HTMLprototyper->lang['log_new_file'], array('file_name' => $fileName));
         } else {
             $error = true;
             $msg = $HTMLprototyper->lang['js_new_file_error'];
@@ -67,6 +69,8 @@ class Project
             copy($projectFolder . $fileName, $projectFolder . $newFileName);
             // Lo agregamos al meta.txt
             $HTMLprototyper->newFileMetaData($newFileName, $this->projectFolder);
+            // Lo agregamos al log.txt
+            $HTMLprototyper->newProjectLog($this->projectFolder, $this->projectMetaData['projectName'], $HTMLprototyper->lang['log_copy_file'], array('file_name' => $newFileName, 'copy_name' => $fileName));
         } else {
             $error = true;
             $msg = $HTMLprototyper->lang['js_copy_file_error'];
@@ -82,6 +86,7 @@ class Project
      */
     public function saveFile($fileName, $html)
     {
+        $HTMLprototyper = new HTMLprototyper();
         /**
          * Si 'magic_quotes_gpc' esta activo (que agrega backslashes para
          * escapar comillas y backslashes) hay que removarlos
@@ -92,8 +97,14 @@ class Project
         $file = new \SPLFileObject(HTMLprototyper::$projectsFolder . '/' . $this->projectFolder . '/' . $fileName, 'w');
         $file->fwrite($html . PHP_EOL);
         // Actualizamos el meta-data
-        $metaData = array('Modified' => date('Y-m-d h:i'));
+        $modifiedDate = date('Y-m-d h:i');
+        $metaData = array('Modified' => $modifiedDate);
         $this->updateFileMetaData($fileName, $metaData);
+        // Lo agregamos al log.txt
+        $HTMLprototyper->newProjectLog($this->projectFolder, $this->projectMetaData['projectName'], $HTMLprototyper->lang['log_save_file'], array('file_name' => $fileName));
+        // Retornamos la nueva fecha de modificación
+        $modifiedDate = new \DateTime($modifiedDate);
+        return $modifiedDate->format($HTMLprototyper->config['date_format']);
     }
 
     /**
@@ -112,11 +123,39 @@ class Project
             unlink(HTMLprototyper::$projectsFolder . '/' . $this->projectFolder .'/'. $fileName);
             // Lo eliminamos del meta.txt
             $this->deleteFileMetaData($fileName);
+            // Lo agregamos al log.txt
+            $HTMLprototyper->newProjectLog($this->projectFolder, $this->projectMetaData['projectName'], $HTMLprototyper->lang['log_delete_file'], array('file_name' => $fileName));
         } else {
             $error = true;
             $msg = $HTMLprototyper->lang['js_delete_file_error'];;
         }
         return array('error' => $error, 'msg' => $msg);
+    }
+
+    /**
+     * Elimina el proyecto por completo, incluyendo todas las carpetas
+     * que pueden estar dentro
+     * @return void
+     */
+    public function deleteProject($dir = null)
+    {
+        // Si el directorio está nulo, ocupamos la raíz del proyecto
+        if (is_null($dir)) {
+            $dir = HTMLprototyper::$projectsFolder . '/' . $this->projectFolder;
+        }
+        // Recorremos el directorio eliminando todos los archivos para luego
+        // poder eliminarlo
+        $files = glob($dir .'/*');
+        foreach ($files as $key => $file) {
+            // Si es un directorio, lo recorremos recursivamente
+            if (is_dir($file)) {
+                $this->deleteProject($file);
+            } else {
+                // Eliminamos el archivo
+                unlink($file);
+            }
+        }
+        rmdir($dir);
     }
 
     /**

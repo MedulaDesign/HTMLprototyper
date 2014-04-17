@@ -7,6 +7,7 @@ return array(
     'new_file' => 'New file',
     'copy_file' => 'Copy file',
     'delete_file' => 'Delete file',
+    'delete_project' => 'Delete Project',
     'save' => 'Save',
     'created' => 'Created at',
     'modified' => 'Modified at',
@@ -19,10 +20,19 @@ return array(
     'js_new_project_name' => 'Project name',
     'js_alphanumeric' => 'Only letters, numbers and dashes are allowed',
     'js_empty_name' => 'The name can\'t be empty',
+    'js_delete_project_confirm' => 'Are you sure you want to delete the ENTIRE project?. This cannot be undone.',
     'js_delete_file_confirm' => 'Are you sure you want to delete this file?. This cannot be undone.',
     'js_new_file_error' => 'It already exists a file with that name, the template doesn\'t exists or the name is invalid',
     'js_copy_file_error' => 'It already exists a file with that name, the file to copy doesn\'t exists or the name is invalid',
     'js_save_file_error' => 'The file doesn\'t exists... hmmmm',
     'js_new_project_error' => 'Could not create the project',
     'js_delete_file_error' => 'Could not delete the file, please try again. If you are trying to delete \'index.html\' you must delete the entire project',
+    /**
+     * Log
+     */
+    'log_project_created' => 'Project created',
+    'log_new_file' => 'New file: {file_name}',
+    'log_copy_file' => 'New file: {file_name} (copied from {copy_name})',
+    'log_save_file' => 'File saved: {file_name}',
+    'log_delete_file' => 'File deleted: {file_name}',
 );

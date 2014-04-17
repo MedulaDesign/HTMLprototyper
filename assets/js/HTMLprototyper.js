@@ -93,6 +93,7 @@ var HTMLprototyper = (function ($) {
         data = data.replace('{created}', lang.created);
         data = data.replace('{created_date}', fileMetaData[1]);
         data = data.replace('{new_project}', lang.new_project);
+        data = data.replace('{delete_project}', lang.delete_project);
         return data;
     };
     /**
@@ -134,8 +135,11 @@ var HTMLprototyper = (function ($) {
         $bar.find('button[data-role="delete"]').on('click', function () {
             _deleteFileEvent(this);
         });
-        $bar.find('button[data-role="project"]').on('click', function () {
+        $bar.find('button[data-role="new-project"]').on('click', function () {
             _newProjectEvent(this);
+        });
+        $bar.find('button[data-role="delete-project"]').on('click', function () {
+            _deleteProjectEvent(this);
         });
     };
     /**
@@ -171,7 +175,7 @@ var HTMLprototyper = (function ($) {
      */
     var _newFileEvent = function (btn) {
         // Cargamos la plantilla
-        Modal.load(_newFileTemplate);
+        HTMLprototyperModal.load(_newFileTemplate);
         // Agregamos las plantillas existente a la modal
         var $template = $('#HTMLprototyper-modal').find('.HTMLprototyper-templates ul');
         for (var template in _templates) {
@@ -201,7 +205,7 @@ var HTMLprototyper = (function ($) {
             }
         });
         // Abrimos la modal
-        Modal.open();
+        HTMLprototyperModal.open();
     };
     /**
      * Genera una copia del archivo que se esta editando
@@ -244,7 +248,8 @@ var HTMLprototyper = (function ($) {
         $html.find('#window-resizer-tooltip').remove();
         $(btn).html($(btn).html() + ' <img src="' + _loaderImg + '">').attr('disabled', 'disabled');
         $.post('../../project.php', {save: true, html: '<html>' + $html.html() + '</html>', fileName: _currentFile}, function (data) {
-            // Nada que hacer por el momento :P
+            // Modificamos la fecha de la barra
+            $('#HTMLprototyper-bar-modified-date').text(data);
         }).always(function () {
             $(btn).removeAttr('disabled').find('img').remove();
         });
@@ -299,6 +304,21 @@ var HTMLprototyper = (function ($) {
         }
     };
 
+    var _deleteProjectEvent = function (btn) {
+        if (confirm(_dataBar.lang.js_delete_project_confirm)) {
+            $(btn).html($(btn).html() + ' <img src="' + _loaderImg + '">').attr('disabled', 'disabled');
+            $.ajax({
+                url: '../../project.php?deleteProject',
+                cache: false,
+                success: function (data) {
+                    document.location.href = '../../';
+                }
+            }).always(function () {
+                $(btn).removeAttr('disabled').find('img').remove();
+            });
+        }
+    };
+
     return {
         init: function () {
             var that = this;
@@ -313,7 +333,7 @@ var HTMLprototyper = (function ($) {
     };
 })(jQuery);
 
-var Modal = (function ($) {
+var HTMLprototyperModal = (function ($) {
     /**
      * Asigna eventos a la ventana modal
      * @return {void}

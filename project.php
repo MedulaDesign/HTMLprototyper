@@ -46,7 +46,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND strtolower($_SERVER['HTTP_X_REQ
             echo json_encode($data);
         // Guarda el archivo
         } elseif (isset($_POST['save']) and isset($_POST['html']) and isset($_POST['fileName'])) {
-            $project->saveFile($_POST['fileName'], $_POST['html']);
+            echo $project->saveFile($_POST['fileName'], $_POST['html']);
         // Eliminar el archivo
         } elseif (isset($_GET['deleteFile']) and isset($_GET['fileName'])) {
             echo json_encode($project->deleteFile($_GET['fileName']));
@@ -58,6 +58,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND strtolower($_SERVER['HTTP_X_REQ
             if (preg_match('/\b[0-9a-f]{40}\b/', $projectFolder) > 0) {
                 echo $projectFolder;
             }
+        } elseif (isset($_GET['deleteProject'])) {
+            $project->deleteProject();
         }
     }
 }

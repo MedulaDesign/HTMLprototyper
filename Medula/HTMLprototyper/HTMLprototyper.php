@@ -47,6 +47,8 @@ class HTMLprototyper
             mkdir($this::$projectsFolder . '/' . $projectFolder);
             // Creamos un archivo meta-data dentro del proyecto
             $this->newProjectMetaData($projectFolder, $projectName);
+            // Creamos al log.txt
+            $this->newProjectLog($projectFolder, $projectName, $this->lang['log_project_created']);
             // Creamos el index.html en base al template definido
             $this->createFromTemplate($templateFile, $projectName, $projectFolder, 'index.html');
             // Enviamos el correo con los datos de acceso
@@ -110,8 +112,8 @@ class HTMLprototyper
         $metaData->fwrite('Foundation: ' . $this->config['foundation_version'] . PHP_EOL);
         $metaData->fwrite('-' . PHP_EOL);
         $metaData->fwrite('index.html' . PHP_EOL);
-        $metaData->fwrite('Created:' . date('Y-m-d h:i'). PHP_EOL);
-        $metaData->fwrite('Modified:' . date('Y-m-d h:i'). PHP_EOL);
+        $metaData->fwrite('Created:' . date('Y-m-d H:i'). PHP_EOL);
+        $metaData->fwrite('Modified:' . date('Y-m-d H:i'). PHP_EOL);
     }
 
     /**
@@ -125,8 +127,25 @@ class HTMLprototyper
         $metaData = new \SPLFileObject($this::$projectsFolder . '/'. $projectFolder . '/meta.txt', 'a');
         $metaData->fwrite('-' . PHP_EOL);
         $metaData->fwrite($fileName . PHP_EOL);
-        $metaData->fwrite('Created:' . date('Y-m-d h:i'). PHP_EOL);
-        $metaData->fwrite('Modified:' . date('Y-m-d h:i'). PHP_EOL);
+        $metaData->fwrite('Created:' . date('Y-m-d H:i'). PHP_EOL);
+        $metaData->fwrite('Modified:' . date('Y-m-d H:i'). PHP_EOL);
+    }
+
+    /**
+     * Agrega un registro de acción al proyecto
+     * @param  string $projectFolder Directorio del proyecto
+     * @param  string $projectName   Nombre del proyecto
+     * @param  string $msg           Mensaje
+     * @return void
+     */
+    public function newProjectLog($projectFolder, $projectName, $msg, $placeholders = array())
+    {
+        $metaData = new \SPLFileObject($this::$projectsFolder . '/'. $projectFolder . '/log.txt', 'a');
+        // Remplazamos los placeholders si existen
+        foreach ($placeholders as $key => $placeholder) {
+            $msg = str_replace('{' . $key . '}', $placeholder, $msg);
+        }
+        $metaData->fwrite(date('Y-m-d H:i') . ' ['.$_SERVER['REMOTE_ADDR'].'] - ' . $msg . PHP_EOL);
     }
 
     /**
