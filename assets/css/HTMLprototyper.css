@@ -173,3 +173,7 @@ html, body {
 	border-top: 8px solid #FFF;
 	top: 15px;
 }
+.toggle-a-la-derecha #HTMLprototyper-bar-toggle{
+	right: 0;
+	left: auto;
+}

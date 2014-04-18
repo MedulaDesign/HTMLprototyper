@@ -244,8 +244,10 @@ var HTMLprototyper = (function ($) {
     var _saveFileEvent = function (btn) {
         var $html = $('html').clone();
         $html.find('body').removeClass('HTMLprototyper-bar-open');
+        $html.find('body').removeClass('closed');
         $html.find('#HTMLprototyper-bar').remove();
         $html.find('#HTMLprototyper-modal').remove();
+        $html.find('#HTMLprototyper-bar-toggle').remove();
         // Esto viene de una extension de Chrome, la eliminamos por
         // si alguien más también la tiene
         $html.find('#window-resizer-tooltip').remove();
